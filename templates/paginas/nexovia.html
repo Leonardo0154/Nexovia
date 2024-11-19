@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block titulo %} NEXOVIA {% endblock %}
+{% block Content %}
+
+<body class="nexovia">
+    
+    <div class="contenedorFondo">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Bienvenidos a NEXOVIA</h1>
+                <p>Optimiza tu tiempo y tu ruta en el transporte público. Encuentra la mejor manera de moverte por la
+                    ciudad
+                    con solo unos clics.</p>
+                <a href="{{ url_for('ruta') }}" class="btn-primary">Calcular Ruta</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    /*py -m venv env
+
+    .\env\Scripts\actívate
+    
+    pip install networkx
+    pip install matplotlib
+    
+    flask --app app run
+    http://127.0.0.1:5000*/
+    
+    .contenedorFondo {
+        height: 90vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff;
+    }
+
+    /* Contenedor principal */
+    .hero-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.6);
+        /* Fondo oscuro semi-transparente */
+    }
+
+    .hero-content {
+        max-width: 900px;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.5);
+        /* Fondo oscuro del contenido */
+        border-radius: 10px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+        font-size: 3em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #f1f1f1;
+    }
+
+    p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        color: #f0f0f0;
+    }
+
+    /* Botón principal */
+    .btn-primary {
+        padding: 15px 30px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.2em;
+        text-decoration: none;
+        border-radius: 50px;
+        display: inline-block;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #45a049;
+        transform: translateY(-3px);
+        /* Efecto de elevación */
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+        /* Efecto de presión */
+    }
+
+    /* Adaptabilidad a pantallas pequeñas */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2.5em;
+        }
+
+        p {
+            font-size: 1.1em;
+        }
+
+        .hero-content {
+            padding: 20px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}

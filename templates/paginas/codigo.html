@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block titulo %} Ruta {% endblock %}
+{% block Content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcular Ruta</title>
+</head>
+
+<body class="bodyContent">
+    <div class="contenido">
+        <div class="padding">
+            <h1>Calcular Ruta</h1>
+            <form id="formularioRuta" action="{{ url_for('calcular') }}" method="post">
+                <input type="text" id="paraderoInicio" name="paraderoInicio" placeholder="Ingrese su paradero de inicio"
+                    required />
+                <input type="text" id="paraderoFinal" name="paraderoFinal" placeholder="Ingrese su paradero de llegada"
+                    required />
+                <input type="text" id="trafico" name="trafico" placeholder="¿Hay tráfico? (si/no)" readonly />
+                <!-- Campo sólo lectura -->
+                <button type="button" onclick="enviarFormulario(event)">Calcular</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="resultado">
+        <div id="resultado">
+            {% if resultado %}
+            {% if 'error' in resultado %}
+            <div class="resultado-container">
+                <p class="error">{{ resultado }}</p>
+            </div>
+            {% else %}
+            <div class="resultado-container">
+                <h2>Resultado</h2>
+                <p><strong>Ruta:</strong> {{ resultado.ruta }}</p>
+                <p><strong>Costo total:</strong> {{ resultado.costo }} soles</p>
+                <p><strong>Tiempo total:</strong> {{ resultado.tiempo }} minutos</p>
+                <img src="{{ resultado.imagen_url }}" alt="Camino recorrido" class="imgCodigo">
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="botonRegreso">
+        <div class="botonPadding">
+            <button onclick="window.history.back()">Regresar</button> <!-- Botón de regreso -->
+        </div>
+    </div>
+    <script>
+        // Función para asignar aleatoriamente "si" o "no" al campo de tráfico
+        function asignarTraficoAleatorio() {
+            const opcionesTrafico = ["si", "no"];
+            const valorAleatorio = opcionesTrafico[Math.floor(Math.random() * opcionesTrafico.length)];
+            document.getElementById("trafico").value = valorAleatorio;
+        }
+
+        // Función para enviar el formulario con el valor de tráfico aleatorio
+        function enviarFormulario(event) {
+            event.preventDefault();  // Prevenir el envío inmediato
+            asignarTraficoAleatorio(); // Asignar valor aleatorio
+            document.getElementById("formularioRuta").submit(); // Enviar el formulario
+        }
+    </script>
+
+    <style>
+        /* Base Body Styling */
+        .contenido {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            background-color: #e0eafc;
+            /* Light blue gradient background */
+            background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Form Container */
+        .padding {
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        /* Form Container Hover Effect */
+        .padding:hover {
+            transform: scale(1.02);
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Paragraph Styling */
+        p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        /* Input Fields */
+        input {
+            padding: 12px;
+            margin: 10px 0;
+            width: calc(100% - 24px);
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        /* Input Fields Focus */
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        /* Button Hover Effect */
+        button:hover {
+            background-color: #45a049;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Result Container */
+        .resultado {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #e0eafc;
+            /* Light blue gradient background */
+            background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #resultado {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        /* Image Styling */
+        .imgCodigo {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Error Message Styling */
+        .error {
+            color: #e63946;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Result Display Styling */
+        .resultado-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Result Container Hover Effect */
+        .resultado-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Result Heading Styling */
+        .resultado-container h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.5em;
+        }
+
+        /* Result Text Styling */
+        .resultado-container p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Back Button Styling */
+        .botonRegreso {
+            background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .botonPadding {
+            width: 100%;
+            max-width: 100%;
+            transition: transform 0.3s ease;
+        }
+    </style>
+</body>
+{% endblock %}
